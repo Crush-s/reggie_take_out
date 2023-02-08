@@ -6,6 +6,7 @@ import java.util.Map;
 
 /**
  * 通用返回结果，服务端响应的数据最终都会封装成此对象
+ *
  * @param <T>
  */
 @Data
@@ -22,6 +23,14 @@ public class R<T> {
     public static <T> R<T> success(T object) {
         R<T> r = new R<T>();
         r.data = object;
+        r.code = 1;
+        return r;
+    }
+
+    public static <T> R<T> success(String msg, T object) {
+        R<T> r = new R<T>();
+        r.data = object;
+        r.msg = msg;
         r.code = 1;
         return r;
     }
