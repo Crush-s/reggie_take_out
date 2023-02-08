@@ -45,6 +45,7 @@ public class LoginCheckFilter implements Filter {
                 "/common/**",
                 "/user/sendMsg",
                 "/user/login",
+                "/user/update",
                 "/user/register"
         };
 
@@ -89,10 +90,6 @@ public class LoginCheckFilter implements Filter {
 
     /**
      * 路径匹配，检查本次请求是否需要放行
-     *
-     * @param urls
-     * @param requestURI
-     * @return
      */
     public boolean check(String[] urls, String requestURI) {
         for (String url : urls) {

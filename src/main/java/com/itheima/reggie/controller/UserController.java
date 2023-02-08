@@ -25,9 +25,6 @@ public class UserController {
 
     /**
      * 发送手机短信验证码
-     *
-     * @param user
-     * @return
      */
     @PostMapping("/sendMsg")
     public R<String> sendMsg(@RequestBody User user, HttpSession session) {
@@ -50,10 +47,6 @@ public class UserController {
 
     /**
      * 移动端用户登录
-     *
-     * @param map
-     * @param session
-     * @return
      */
     @PostMapping("/login")
     public R<User> login(@RequestBody Map map, HttpSession session) {
@@ -84,10 +77,6 @@ public class UserController {
 
     /**
      * 移动端用户注册
-     *
-     * @param map
-     * @param session
-     * @return
      */
     @PostMapping("/register")
     public R<User> register(@RequestBody Map<String, String> map, HttpSession session) {
@@ -127,6 +116,53 @@ public class UserController {
             return R.error("用户已经存在");
         }
         return R.error("验证码错误");
+    }
+
+    /**
+     * 移动端用户信息修改
+     */
+    @PostMapping("/update")
+    public R<User> update(@RequestBody Map<String, String> map, HttpSession session) {
+        log.info(map.toString());
+
+        //获取用户id
+        String id = map.get("id");
+
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getId, id);
+
+        User user = userService.getOne(queryWrapper);
+
+        if (user == null) {
+            return R.error("用户不存在");
+        }
+
+        //获取手机号
+        String phone = map.get("phone");
+        if (!StringUtils.equals(user.getPhone(), phone)) {
+            //获取验证码
+            String code = map.get("code");
+
+            //从Session中获取保存的验证码
+            Object codeInSession = session.getAttribute(phone);
+
+            //进行验证码的比对（页面提交的验证码和Session中保存的验证码比对）
+            if (codeInSession != null && codeInSession.equals(code)) {
+                boolean a = true;
+            } else {
+                return R.error("验证码错误");
+            }
+        }
+        user.setSex(map.get("sex"));
+        user.setName(map.get("name"));
+        user.setIdNumber(map.get("idNumber"));
+        user.setAvatar(map.get("avatar"));
+        user.setUserFortunellaVenosa(map.get("userFortunellaVenosa"));
+        user.setPhone(phone);
+        user.setStatus(Integer.getInteger(map.get("status")));
+        userService.updateById(user);
+        session.setAttribute("user", user.getId());
+        return R.success(user);
     }
 
 }
