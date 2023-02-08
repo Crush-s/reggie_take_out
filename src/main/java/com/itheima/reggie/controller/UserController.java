@@ -39,9 +39,6 @@ public class UserController {
             String code = ValidateCodeUtils.generateValidateCode(4).toString();
             log.info("code={}", code);
 
-            //调用阿里云提供的短信服务API完成发送短信
-            //SMSUtils.sendMessage("瑞吉外卖","",phone,code);
-
             //需要将生成的验证码保存到Session
             session.setAttribute(phone, code);
 
@@ -79,17 +76,57 @@ public class UserController {
             queryWrapper.eq(User::getPhone, phone);
 
             User user = userService.getOne(queryWrapper);
-            if (user == null) {
-                //判断当前手机号对应的用户是否为新用户，如果是新用户就自动完成注册
-                user = new User();
-                user.setPhone(phone);
-                user.setStatus(1);
-                userService.save(user);
-            }
             session.setAttribute("user", user.getId());
             return R.success(user);
         }
         return R.error("登录失败");
+    }
+
+    /**
+     * 移动端用户注册
+     *
+     * @param map
+     * @param session
+     * @return
+     */
+    @PostMapping("/register")
+    public R<User> register(@RequestBody Map<String, String> map, HttpSession session) {
+        log.info(map.toString());
+
+        //获取手机号
+        String phone = map.get("phone").toString();
+        //获取验证码
+        String code = map.get("code").toString();
+
+        //从Session中获取保存的验证码
+        Object codeInSession = session.getAttribute(phone);
+
+        //进行验证码的比对（页面提交的验证码和Session中保存的验证码比对）
+        if (codeInSession != null && codeInSession.equals(code)) {
+            //如果能够比对成功，说明手机号正确
+
+            LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(User::getPhone, phone);
+
+            User user = userService.getOne(queryWrapper);
+            if (user == null) {
+                //判断当前手机号对应的用户是否为新用户，如果是新用户就自动完成注册
+                user = new User();
+                user.setSex(map.get("sex"));
+                user.setName(map.get("name"));
+                user.setIdNumber(map.get("idNumber"));
+                user.setAvatar(map.get("avatar"));
+                user.setUserFortunellaVenosa(map.get("userFortunellaVenosa"));
+                user.setPhone(phone);
+                user.setStatus(1);
+                userService.save(user);
+                session.setAttribute("user", user.getId());
+                return R.success(user);
+            }
+
+            return R.error("用户已经存在");
+        }
+        return R.error("验证码错误");
     }
 
 }
