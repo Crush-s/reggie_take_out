@@ -9,13 +9,11 @@ import com.hlw.reggie.mapper.HotSearchMapper;
 import org.springframework.stereotype.Service;
 
 /**
-* @author hlw
-* @description 针对表【hot_search(热搜信息)】的数据库操作Service实现
-* @createDate 2023-02-09 14:30:33
-*/
+ * @description 针对表【hot_search(热搜信息)】的数据库操作Service实现
+ */
 @Service
 public class HotSearchServiceImpl extends ServiceImpl<HotSearchMapper, HotSearch>
-    implements HotSearchService{
+        implements HotSearchService {
 
     @Override
     public R<PlatformRules> select() {

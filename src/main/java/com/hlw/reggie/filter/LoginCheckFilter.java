@@ -44,6 +44,7 @@ public class LoginCheckFilter implements Filter {
                 "/front/**",
                 "/common/**",
                 "/platformRules/**",
+                "/points-ranking/**",
                 "/hotSearch/page",
                 "/hotSearch/save",
                 "/hotSearch/update",

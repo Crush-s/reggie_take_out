@@ -9,9 +9,7 @@ import com.hlw.reggie.service.PlatformRulesService;
 import org.springframework.stereotype.Service;
 
 /**
- * @author hlw
  * @description 针对表【platform_rules(平台规则)】的数据库操作Service实现
- * @createDate 2023-02-09 10:35:09
  */
 @Service
 public class PlatformRulesServiceImpl extends ServiceImpl<PlatformRulesMapper, PlatformRules>
