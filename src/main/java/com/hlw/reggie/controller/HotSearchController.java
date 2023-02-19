@@ -58,7 +58,7 @@ public class HotSearchController {
     }
 
     /**
-     * 根据id修改
+     * 根据id删除
      *
      * @return 返回信息
      */
