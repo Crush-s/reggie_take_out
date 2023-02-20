@@ -31,4 +31,6 @@ public class PlatformRulesController {
         return platformRulesService.select(platformRules);
     }
 
+    // 管理
+
 }

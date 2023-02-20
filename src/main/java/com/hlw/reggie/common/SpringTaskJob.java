@@ -20,7 +20,7 @@ public class SpringTaskJob {
     private final HotSearchService hotSearchService;
 
     /**
-     * 定时任务 每分钟执行一次 把信息同步到库中
+     * 定时任务 每30分钟执行一次 把热搜信息同步到库中
      */
     @Scheduled(cron = "* 0/30 * * * ? ")
     public void getHotSearch() {
