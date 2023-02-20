@@ -50,7 +50,7 @@ public class EmployeeController {
 
         //4、密码比对，如果不一致则返回登录失败结果
         if (!emp.getPassword().equals(password)) {
-            return R.error("登录失败");
+            return R.error("密码错误");
         }
 
         //5、查看用户状态，如果为已禁用状态，则返回用户已禁用结果
@@ -137,7 +137,7 @@ public class EmployeeController {
      * @param employee
      * @return
      */
-    @PutMapping
+    @PostMapping("update")
     public R<String> update(HttpServletRequest request, @RequestBody Employee employee) {
         log.info(employee.toString());
 
